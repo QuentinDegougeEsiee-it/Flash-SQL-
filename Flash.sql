@@ -15,17 +15,12 @@ CREATE TABLE users (
 CREATE TABLE score (
     id INT AUTO_INCREMENT,
     id_user INT,
-<<<<<<< HEAD
     game_id INT,
-=======
-    game_id INT ,
->>>>>>> 843ba1df63625e1ccd6aa7752bc3f74958955053
     difficulty ENUM('1', '2', '3'),
     game_score INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id),
     FOREIGN KEY (id_user) REFERENCES users(id_user)
-<<<<<<< HEAD
     FOREIGN KEY (game_id) REFERENCES jeu(id)
     );
 
@@ -42,9 +37,6 @@ CREATE TABLE message (
 
 -- User story 1 :Création de la table jeu--
 CREATE TABLE jeu (
-    id INT AUTO_INCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100)
 );
-=======
-    );
->>>>>>> 843ba1df63625e1ccd6aa7752bc3f74958955053
