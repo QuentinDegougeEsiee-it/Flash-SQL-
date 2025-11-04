@@ -1,3 +1,5 @@
+-------------------------------------------------------User story 1 :------------------------------------------
+
 -- Création de la base de données
 CREATE DATABASE site_info
     DEFAULT CHARACTER SET utf8mb4
@@ -54,7 +56,7 @@ CREATE TABLE message (
     FOREIGN KEY (id_user) REFERENCES users(id_user),
     FOREIGN KEY (game_id) REFERENCES jeu(id)
 );
--- User story 1 :Création de la table jeu--
+-- Création de la table jeu--
 CREATE TABLE jeu (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100)
