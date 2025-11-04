@@ -145,3 +145,19 @@ VALUES
         (5, 4, 'Vous jouez trop vite 😅'),
         (5, 5, 'Haha merci'),
         (5, 1, 'À plus tard tout le monde 👋');
+
+
+
+-- ======================= User story 4 ==================
+-- mise à jours du mpd et du mail
+
+
+
+UPDATE users
+    SET password = @new_mdp
+    WHERE id_client = @id_entry ;
+
+
+UPDATE users
+    SET email = @new_email
+    WHERE id_client = @id_entry AND password = @new_mdp and @new_email NOT IN (SELECT email FROM users);
