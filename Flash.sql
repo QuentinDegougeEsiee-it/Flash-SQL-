@@ -7,7 +7,7 @@ CREATE TABLE users (
     email VARCHAR(100),
     pseudo VARCHAR(100),
     password VARCHAR(100),
-    created_at DATETIME,
-    updated_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY(id_user)
-    );    
+    );
