@@ -10,4 +10,4 @@ CREATE TABLE users (
     created_at DATETIME,
     updated_at DATETIME,
     PRIMARY KEY(id_user)
-    );
+    );    
