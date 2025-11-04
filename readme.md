@@ -5,6 +5,11 @@
 ![Status](https://img.shields.io/badge/Status-Partie_2_SQL_En_cours-red?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
+![GitHub contributors](https://img.shields.io/github/contributors/QuentinDegougeEsiee-it/Flash-SQL-?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/QuentinDegougeEsiee-it/Flash-SQL-?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/QuentinDegougeEsiee-it/Flash-SQL-?style=for-the-badge)
+
+
 Ce dépôt contient la partie 2 du "Projet Flash" réalisé dans le cadre de notre formation à la Coding Factory. L'objectif était de concevoir la base de données MySQL et de rédiger l'ensemble des requêtes SQL nécessaires pour une application web de jeu.
 
 **Équipe :**
