@@ -11,3 +11,14 @@ CREATE TABLE users (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY(id_user)
     );
+
+CREATE TABLE Score (
+    id INT AUTO_INCREMENT,
+    id_user INT,
+    game_id INT ,
+    difficulty INT ENUM('1', '2', '3'),
+    game_score INT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(id),
+    FOREIGN KEY (id_user) REFERENCES users(id_user)
+    );
