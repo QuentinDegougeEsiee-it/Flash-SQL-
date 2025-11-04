@@ -1,5 +1,10 @@
 # Projet Flash SQL - Power of Memory
 
+![MySQL](https://img.shields.io/badge/Database-MySQL-blue?style=for-the-badge&logo=mysql)
+![PHP](https://img.shields.io/badge/Backend_Futur-PHP-8892BF?style=for-the-badge&logo=php)
+![Status](https://img.shields.io/badge/Status-Partie_2_SQL_Terminée-green?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+
 Ce dépôt contient la partie 2 du "Projet Flash" réalisé dans le cadre de notre formation à la Coding Factory. L'objectif était de concevoir la base de données MySQL et de rédiger l'ensemble des requêtes SQL nécessaires pour une application web de jeu.
 
 **Équipe :**
@@ -54,7 +59,7 @@ Toutes les requêtes sont commentées et regroupées dans un unique fichier `.sq
 
 ### 4. Chat général
 * **Envoi de message** : Insertion d'un nouveau message dans le chat global.
-* **Affichage du chat** : Récupération des messages des dernières 24 heures, triés par ordre chronologique, avec le pseudo de l'expéditeur et une colonne "isSender" pour identifier les messages de l'utilisateur connecté.
+* **Affichage du chat** : Récupération des messages des dernières 24 heures, triés par ordre chronologique, avec le pseudo de l'expéditeur et une colonne "isSender".
 
 ### 5. Messagerie privée
 * **Envoi d'un message privé** : Création d'un message entre un expéditeur et un destinataire.
