@@ -1,0 +1,10 @@
+select nom ,prenom from commercial;
+select nom ,prenom from commercial order by prenom asc;
+select nom ,prenom from commercial order by prenom desc;
+SELECT * FROM rdv WHERE horaire_rdv > '2023-01-15';
+SELECT * FROM mouvement where montant < 500 and montant > 0;
+SELECT nom FROM client WHERE nom LIKE 'c%';
+SELECT * FROM commercial where nom like '%d';
+SELECT * FROM rdv where id_commercial =4 ;
+select id_client from client where nom ='jess';
+select * from rdv where id_client = 2;
