@@ -12,11 +12,11 @@ CREATE TABLE users (
     PRIMARY KEY(id_user)
     );
 
-CREATE TABLE Score (
+CREATE TABLE score (
     id INT AUTO_INCREMENT,
     id_user INT,
     game_id INT ,
-    difficulty INT ENUM('1', '2', '3'),
+    difficulty ENUM('1', '2', '3'),
     game_score INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id),
