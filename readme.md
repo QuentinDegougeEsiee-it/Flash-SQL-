@@ -2,7 +2,7 @@
 
 ![MySQL](https://img.shields.io/badge/Database-MySQL-blue?style=for-the-badge&logo=mysql)
 ![PHP](https://img.shields.io/badge/Backend_Futur-PHP-8892BF?style=for-the-badge&logo=php)
-![Status](https://img.shields.io/badge/Status-Partie_2_SQL_Terminée-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Partie_2_SQL_En_cours-red?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
 Ce dépôt contient la partie 2 du "Projet Flash" réalisé dans le cadre de notre formation à la Coding Factory. L'objectif était de concevoir la base de données MySQL et de rédiger l'ensemble des requêtes SQL nécessaires pour une application web de jeu.
