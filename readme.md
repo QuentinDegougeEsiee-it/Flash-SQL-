@@ -1,4 +1,4 @@
-# Projet Flash SQL - Power of Memory
+# ![Typing SVG](https://readme-typing-svg.demolab.com?font=Momo+Trust+Display&size=30&duration=3000&pause=500&color=F7F7F7&center=true&vCenter=true&width=435&lines=Bonjour+et+Bienvenue;Voici;La+partie+2++du+projet+flash+)
 
 ![MySQL](https://img.shields.io/badge/Database-MySQL-blue?style=for-the-badge&logo=mysql)
 ![PHP](https://img.shields.io/badge/Backend_Futur-PHP-8892BF?style=for-the-badge&logo=php)
