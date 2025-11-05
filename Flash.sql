@@ -355,6 +355,59 @@ WHERE mp.id IS NULL;
 
 
 
+-- ======================= User story 14 ==================
+-- permettant d’afficher un échange entre deux utilisateurs
+
+SELECT  message, 
+        user_sender_id, 
+        user_receiver_id, 
+        created_at, 
+        read_at, 
+        is_read, 
+        (SELECT id_user, COUNT(*) As sender_games  
+            FROM score
+            WHERE id_user = user_sender_id 
+            GROUP BY id_user )
+        
+        (SELECT id_user, COUNT(*) As receiver_games  
+            FROM score
+            WHERE id_user = user_receiver_id 
+            GROUP BY id_user )
+        
+        (SELECT id_user, COUNT(*) As sender_most_played_games  
+            FROM score
+            WHERE id_user = user_sender_id 
+            GROUP BY id_user )
+        
+        (SELECT id_user, COUNT(*) As receiver_most_played_games  
+            FROM score
+            WHERE id_user = user_receiver_id 
+            GROUP BY id_user )
+            
+    FROM message_prive
+    WHERE user_sender_id = @user_talking_1 OR user_sender_id = @user_talking_2
+        AND user_receiver_id = @user_talking_1 OR user_receiver_id = @user_talking_2
+    ORDER BY Year(created_at), MONTH(created_at) ASC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- ======================= User story 15 ==================
 -- permettra d’afficher toutes les stats de tous les joueur en fonction d’une année
