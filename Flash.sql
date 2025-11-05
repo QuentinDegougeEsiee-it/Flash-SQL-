@@ -122,12 +122,24 @@ VALUES
 
 UPDATE users
     SET password = @new_mdp
-    WHERE id_client = @id_entry ;
+    WHERE id_user = @id_entry ;
 
 
 UPDATE users
     SET email = @new_email
-    WHERE id_client = @id_entry AND password = @new_mdp and @new_email NOT IN (SELECT email FROM users);
+    WHERE id_user = @id_entry AND password = @old_mdp and @new_email NOT IN (SELECT email FROM users);
+
+
+-- ======================= User story 5 ==================
+-- requète identifiant
+
+SELECT  id_user , email, password FROM users
+    WHERE email = @given_email
+        AND password = @given_password
+
+
+
+
 ---Partie tristan:----
 -- --------------------------------------------------------
 -- Story 6 : Afficher les scores (filtrable par jeu et difficulté)
@@ -248,3 +260,9 @@ CREATE TABLE message_prive (
     ALTER TABLE message_prive
     FOREIGN KEY (user_sender_id) REFERENCES users(id_user),
     FOREIGN KEY (user_receiver_id) REFERENCES users(id_user);
+
+
+
+
+
+
