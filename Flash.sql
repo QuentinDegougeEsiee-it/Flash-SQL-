@@ -115,6 +115,16 @@ VALUES
         (5, 4, 'Vous jouez trop vite 😅'),
         (5, 5, 'Haha merci'),
         (5, 1, 'À plus tard tout le monde 👋');
+
+
+-- ======================= User story 3 ==================
+-- a requête SQL qui permettra d’enregistrer un utilisateur dans la table utilisateurs
+
+INSERT INTO users(email,password,pseudo)
+    VALUES (@new_user_email,@new_user_password, @new_user_pseudo);
+
+
+
 -- ======================= User story 4 ==================
 -- mise à jours du mpd et du mail
 
