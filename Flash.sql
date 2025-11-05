@@ -464,6 +464,6 @@ WHERE
     id_user = 1
     AND YEAR(created_at) = 2025
 GROUP BY
-    YEAR(created_at), MONTH(created_at) -- Correction : Ajout du GROUP BY
+    YEAR(created_at), MONTH(created_at) 
 ORDER BY
-    Mois ASC; -- Correction : Ordre croissant
+    Mois ASC; 
