@@ -51,8 +51,7 @@ CREATE TABLE message (
     FOREIGN KEY (id_user) REFERENCES users(id_user),
     FOREIGN KEY (game_id) REFERENCES jeu(id)
 );
-
--- ======================= User story 2 + 3 ==================
+-- ======================= User story 2 ==================
 -- création du jeu de données
 
 INSERT INTO jeu(name)
@@ -116,9 +115,6 @@ VALUES
         (5, 4, 'Vous jouez trop vite 😅'),
         (5, 5, 'Haha merci'),
         (5, 1, 'À plus tard tout le monde 👋');
-
-
-
 -- ======================= User story 4 ==================
 -- mise à jours du mpd et du mail
 
@@ -126,12 +122,97 @@ VALUES
 
 UPDATE users
     SET password = @new_mdp
-    WHERE id_client = @id_entry ;
+    WHERE id_user = @id_entry ;
 
 
 UPDATE users
     SET email = @new_email
-    WHERE id_client = @id_entry AND password = @new_mdp and @new_email NOT IN (SELECT email FROM users);
+    WHERE id_user = @id_entry AND password = @old_mdp and @new_email NOT IN (SELECT email FROM users);
+
+
+-- ======================= User story 5 ==================
+-- requète identifiant
+
+SELECT  id_user , email, password FROM users
+    WHERE email = @given_email
+        AND password = @given_password;
+
+
+
+
+---Partie tristan:----
+-- --------------------------------------------------------
+-- Story 6 : Afficher les scores (filtrable par jeu et difficulté)
+-- --------------------------------------------------------
+
+SET @difficulty_filter_s6 = '2'; 
+SET @game_name_filter_s6 = 'Memory';
+
+SELECT
+  jeu.name,
+  users.pseudo,
+  score.difficulty,
+  score.game_score,
+  score.created_at
+FROM
+  score
+JOIN
+  users ON score.id_user = users.id_user
+JOIN
+  jeu ON score.game_id = jeu.id
+WHERE
+  
+  (jeu.name = @game_name_filter_s6 OR @game_name_filter_s6 IS NULL)
+ 
+  AND (score.difficulty = @difficulty_filter_s6 OR @difficulty_filter_s6 IS NULL)
+ORDER BY
+  jeu.name ASC, 
+  score.difficulty DESC,
+  score.game_score DESC; 
+
+
+
+
+
+
+  -- Story 7--
+SET @difficulty_filter_s7 = NULL;
+SET @game_name_filter_s7 = NULL;
+SET @pseudo_filter_s7 = 'User'; 
+
+SELECT
+  jeu.name,
+  users.pseudo,
+  score.difficulty,
+  score.game_score,
+  score.created_at
+FROM
+  score
+JOIN
+  users ON score.id_user = users.id_user
+JOIN
+  jeu ON score.game_id = jeu.id
+WHERE
+  
+  (users.pseudo LIKE CONCAT('%', @pseudo_filter_s7, '%') OR @pseudo_filter_s7 IS NULL)
+  
+  
+  AND (jeu.name = @game_name_filter_s7 OR @game_name_filter_s7 IS NULL)
+  AND (score.difficulty = @difficulty_filter_s7 OR @difficulty_filter_s7 IS NULL)
+ORDER BY
+  jeu.name ASC,
+  score.difficulty DESC,
+  score.game_score DESC;
+
+--Story 8--
+@difficulty_s8 = '2';
+@game_id_s8 = 'Memory';
+@id_user_s8 = 2;
+@game_score_s8 = 800;
+INSERT INTO score (id_user, game_id, difficulty,game_score) VALUES (@id_user_s8, @game_id_s8, @difficulty_s8, @game_score_s8);
+
+
+
 
 
 
@@ -180,6 +261,12 @@ CREATE TABLE message_prive (
     ADD FOREIGN KEY (user_sender_id) REFERENCES users(id_user),
     ADD FOREIGN KEY (user_receiver_id) REFERENCES users(id_user);
 
+
+
+
+
+
+    
 -- ======================= User story 12 ==================
 -- ====== Ajout de 5 utilisateurs pour les tests=======
 INSERT INTO users (email, pseudo, password) VALUES
