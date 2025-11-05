@@ -367,24 +367,24 @@ SELECT
     (SELECT u1.pseudo
         FROM score s1 
         JOIN users u1 ON s1.id_user = u1.id_user
-        WHERE Year(s1.created_at) = Year(u.created_at)
-            AND MONTH(s1.created_at) = MONTH(u.created_at)
+        WHERE Year(s1.created_at) = Year(score.created_at)
+            AND MONTH(s1.created_at) = MONTH(score.created_at)
         ORDER BY s1.game_score DESC
          LIMIT 1) AS Top_1,
 
     (SELECT u2.pseudo
         FROM score s2
         JOIN users u2 ON s2.id_user = u2.id_user
-        WHERE Year(s2.created_at) = Year(u.created_at)
-            AND MONTH(s2.created_at) = MONTH(u.created_at)
+        WHERE Year(s2.created_at) = Year(score.created_at)
+            AND MONTH(s2.created_at) = MONTH(score.created_at)
         ORDER BY s2.game_score DESC
          LIMIT 1 offset 1) AS Top_2,
     
     (SELECT u3.pseudo
         FROM score s3
         JOIN users u3 ON s3.id_user = u3.id_user
-        WHERE Year(s3.created_at) = Year(u.created_at)
-            AND MONTH(s3.created_at) = MONTH(u.created_at)
+        WHERE Year(s3.created_at) = Year(score.created_at)
+            AND MONTH(s3.created_at) = MONTH(score.created_at)
         ORDER BY s3.game_score DESC
          LIMIT 1 offset 2) AS Top_3,
 
