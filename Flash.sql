@@ -135,7 +135,7 @@ UPDATE users
 
 SELECT  id_user , email, password FROM users
     WHERE email = @given_email
-        AND password = @given_password
+        AND password = @given_password;
 
 
 
@@ -266,3 +266,4 @@ CREATE TABLE message_prive (
 
 
 
+    
