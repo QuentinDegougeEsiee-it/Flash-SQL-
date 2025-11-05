@@ -52,36 +52,7 @@ CREATE TABLE message (
     FOREIGN KEY (game_id) REFERENCES jeu(id)
 );
 
-
--- --------------------------------------------------------
--- Partie Emma : Requêtes corrigées
--- --------------------------------------------------------
-
--- ======================= User story 9 ==================
--- Insertion d'un message
--- Noms corrigés : table 'message', colonnes 'id_user' et 'text_message'
-INSERT INTO message (game_id, id_user, text_message)
-VALUES (1, 3, 'Prêt pour une partie ?');
-
-
--- ======================= User story 10 ==================
--- Sélection des messages
--- Noms corrigés : tables 'message' et 'users', colonnes 'text_message', 'id_user'
-SELECT 
-    m.text_message AS contenu_message,
-    u.pseudo AS auteur,
-    m.created_at AS date_message,
-    CASE 
-        WHEN m.id_user = 2 THEN TRUE 
-        ELSE FALSE 
-    END AS isSender
-FROM message m
-JOIN users u ON m.id_user = u.id_user -- Jointure corrigée
-WHERE m.created_at >= NOW() - INTERVAL 1 DAY
-ORDER BY m.created_at ASC;
-
-
--- ======================= User story 2 ==================
+-- ======================= User story 2 + 3 ==================
 -- création du jeu de données
 
 INSERT INTO jeu(name)
@@ -161,3 +132,34 @@ UPDATE users
 UPDATE users
     SET email = @new_email
     WHERE id_client = @id_entry AND password = @new_mdp and @new_email NOT IN (SELECT email FROM users);
+
+
+
+-- --------------------------------------------------------
+-- Partie Emma : Requêtes corrigées
+-- --------------------------------------------------------
+
+-- ======================= User story 9 ==================
+-- Insertion d'un message
+-- Noms corrigés : table 'message', colonnes 'id_user' et 'text_message'
+INSERT INTO message (game_id, id_user, text_message)
+VALUES (1, 3, 'Prêt pour une partie ?');
+
+
+-- ======================= User story 10 ==================
+-- Sélection des messages
+-- Noms corrigés : tables 'message' et 'users', colonnes 'text_message', 'id_user'
+SELECT 
+    m.text_message AS contenu_message,
+    u.pseudo AS auteur,
+    m.created_at AS date_message,
+    CASE 
+        WHEN m.id_user = 2 THEN TRUE 
+        ELSE FALSE 
+    END AS isSender
+FROM message m
+JOIN users u ON m.id_user = u.id_user -- Jointure corrigée
+WHERE m.created_at >= NOW() - INTERVAL 1 DAY
+ORDER BY m.created_at ASC;
+
+
