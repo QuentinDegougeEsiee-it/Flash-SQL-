@@ -192,6 +192,16 @@ ORDER BY
   score.difficulty DESC,
   score.game_score DESC;
 
+--Story 8--
+@difficulty_s8 = '2';
+@game_id_s8 = 'Memory';
+@id_user_s8 = 2;
+@game_score_s8 = 800;
+INSERT INTO score (id_user, game_id, difficulty,game_score) VALUES (@id_user_s8, @game_id_s8, @difficulty_s8, @game_score_s8);
+
+
+
+
 
 
 -- --------------------------------------------------------
@@ -238,9 +248,3 @@ CREATE TABLE message_prive (
     ALTER TABLE message_prive
     FOREIGN KEY (user_sender_id) REFERENCES users(id_user),
     FOREIGN KEY (user_receiver_id) REFERENCES users(id_user);
-
-
-
-
-
-
