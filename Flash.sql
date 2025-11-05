@@ -177,7 +177,80 @@ CREATE TABLE message_prive (
 ) ENGINE=InnoDB;
 
     ALTER TABLE message_prive
-    FOREIGN KEY (user_sender_id) REFERENCES users(id_user),
-    FOREIGN KEY (user_receiver_id) REFERENCES users(id_user);
+    ADD FOREIGN KEY (user_sender_id) REFERENCES users(id_user),
+    ADD FOREIGN KEY (user_receiver_id) REFERENCES users(id_user);
+
+-- ======================= User story 12 ==================
+-- ====== Ajout de 5 utilisateurs pour les tests=======
+INSERT INTO users (email, pseudo, password) VALUES
+('alice@email.com', 'Alice', 'azerty123'),
+('bob@email.com', 'Bob', 'qwerty123'),
+('charlie@email.com', 'Charlie', 'pass123'),
+('diana@email.com', 'Diana', 'hello123'),
+('eva@email.com', 'Eva', 'test123');
 
 
+-- ======= Insertion de 20 messages simulant des conversations privées =======
+INSERT INTO message_prive (user_sender_id, user_receiver_id, message, created_at)
+VALUES
+(1, 2, 'Salut Bob, tu es dispo pour une partie ?', '2025-10-01 10:05:00'),
+(2, 1, 'Oui, je lance le jeu !', '2025-10-01 10:06:00'),
+(1, 2, 'Ok parfait !', '2025-10-01 10:07:00'),
+(3, 1, 'Salut Alice, tu peux m’expliquer une règle ?', '2025-10-02 14:12:00'),
+(1, 3, 'Bien sûr, laquelle ?', '2025-10-02 14:13:00'),
+(3, 1, 'Sur le système de score !', '2025-10-02 14:14:00'),
+(4, 2, 'Salut Bob, tu joues ce soir ?', '2025-10-03 18:30:00'),
+(2, 4, 'Oui, vers 20h !', '2025-10-03 18:31:00'),
+(4, 2, 'Cool, à tout à l’heure !', '2025-10-03 18:32:00'),
+(1, 4, 'Hey Diana, bien joué pour ta dernière partie !', '2025-10-04 09:10:00'),
+(4, 1, 'Merci Alice ', '2025-10-04 09:12:00'),
+(3, 2, 'Bob, tu es sur le serveur ?', '2025-10-04 20:00:00'),
+(2, 3, 'Oui, je viens d’arriver', '2025-10-04 20:01:00'),
+(3, 2, 'Parfait, on démarre ?', '2025-10-04 20:02:00'),
+(2, 3, 'Go !', '2025-10-04 20:03:00'),
+(1, 3, 'Charlie, t’as vu le nouveau mode ?', '2025-10-05 11:05:00'),
+(3, 1, 'Oui, il est top !', '2025-10-05 11:06:00'),
+(4, 3, 'Salut Charlie, tu veux rejoindre notre groupe ?', '2025-10-06 16:00:00'),
+(3, 4, 'Avec plaisir !', '2025-10-06 16:05:00'),
+(1, 2, 'GG pour ta victoire Bob !', '2025-10-06 19:30:00');
+
+
+
+--====== Création (insertion) d’un nouveau message privé =========
+INSERT INTO message_prive (user_sender_id, user_receiver_id, message)
+VALUES (1, 2, 'Salut Bob, encore une partie ?');
+
+-- Modification du contenu d’un message ===========
+UPDATE message_prive
+SET message = 'Salut Bob, encore une partie ce soir ?'
+WHERE id = 1
+  AND user_sender_id = 1;
+
+-- ========== Suppression d’un message ==========
+DELETE FROM message_prive
+WHERE id = 3
+  AND user_sender_id = 1;
+
+-- ====Vérification cohérence pour les tests ultérieurs =====
+-- === voir toutes les conversations ===
+SELECT 
+    mp.id,
+    u1.pseudo AS expediteur,
+    u2.pseudo AS destinataire,
+    mp.message,
+    mp.is_read,
+    mp.created_at
+FROM message_prive mp
+JOIN users u1 ON mp.user_sender_id = u1.id_user
+JOIN users u2 ON mp.user_receiver_id = u2.id_user
+ORDER BY mp.created_at ASC;
+
+-- === Voir les messages envoyés ou reçus par un utilisateur
+SELECT * FROM message_prive
+WHERE user_sender_id = 1 OR user_receiver_id = 1;
+
+-- == Voir les utilisateurs sans messages ==
+SELECT u.id_user, u.pseudo FROM users
+LEFT JOIN message_prive mp
+ON u.id_user = mp.user_sender_id OR u.id_user = mp.user_receiver_id
+WHERE mp.id IS NULL;
