@@ -266,7 +266,7 @@ CREATE TABLE message_prive (
 
 
 
-    
+
 -- ======================= User story 12 ==================
 -- ====== Ajout de 5 utilisateurs pour les tests=======
 INSERT INTO users (email, pseudo, password) VALUES
@@ -341,3 +341,49 @@ SELECT u.id_user, u.pseudo FROM users
 LEFT JOIN message_prive mp
 ON u.id_user = mp.user_sender_id OR u.id_user = mp.user_receiver_id
 WHERE mp.id IS NULL;
+
+
+
+
+
+-- ======================= User story 15 ==================
+-- permettra d’afficher toutes les stats de tous les joueur en fonction d’une année
+
+
+SELECT
+    Year(score.created_at) AS Année,
+    MONTH(score.created_at) As Mois,
+
+    (SELECT u1.pseudo
+        FROM score s1 
+        JOIN users u1 ON s1.id_user = u1.id_user
+        WHERE Year(s1.created_at) = Year(u1.created_at)
+            AND MONTH(s1.created_at) = MONTH(u1.created_at)
+        ORDER BY s1.game_score DESC
+         LIMIT 1) AS Top_1,
+
+    (SELECT u2.pseudo
+        FROM score s2
+        JOIN users u2 ON s2.id_user = u2.id_user
+        WHERE Year(s2.created_at) = Year(u2.created_at)
+            AND MONTH(s2.created_at) = MONTH(u2.created_at)
+        ORDER BY s2.game_score DESC
+         LIMIT 1 offset 1) AS Top_2,
+    
+    (SELECT u3.pseudo
+        FROM score s3
+        JOIN users u3 ON s3.id_user = u3.id_user
+        WHERE Year(s3.created_at) = Year(u3.created_at)
+            AND MONTH(s3.created_at) = MONTH(u3.created_at)
+        ORDER BY s3.game_score DESC
+         LIMIT 1 offset 2) AS Top_3,
+
+    COUNT(s.id) AS Total_parties,
+
+    (SELECT name FROM jeu ) As Jeu_le_plus_joué
+
+FROM score s
+WHERE YEAR(s.created_at) = 2025
+GROUP BY YEAR(s.created_at), MONTH(s.created_at)
+ORDER BY YEAR(s.created_at), MONTH(s.created_at);
+
