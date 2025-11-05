@@ -355,6 +355,59 @@ WHERE mp.id IS NULL;
 
 
 
+-- ======================= User story 14 ==================
+-- permettant d’afficher un échange entre deux utilisateurs
+
+SELECT  message, 
+        user_sender_id, 
+        user_receiver_id, 
+        created_at, 
+        read_at, 
+        is_read, 
+        (SELECT id_user, COUNT(*) As sender_games  
+            FROM score
+            WHERE id_user = user_sender_id 
+            GROUP BY id_user )
+        
+        (SELECT id_user, COUNT(*) As receiver_games  
+            FROM score
+            WHERE id_user = user_receiver_id 
+            GROUP BY id_user )
+        
+        (SELECT id_user, COUNT(*) As sender_most_played_games  
+            FROM score
+            WHERE id_user = user_sender_id 
+            GROUP BY id_user )
+        
+        (SELECT id_user, COUNT(*) As receiver_most_played_games  
+            FROM score
+            WHERE id_user = user_receiver_id 
+            GROUP BY id_user )
+            
+    FROM message_prive
+    WHERE user_sender_id = @user_talking_1 OR user_sender_id = @user_talking_2
+        AND user_receiver_id = @user_talking_1 OR user_receiver_id = @user_talking_2
+    ORDER BY Year(created_at), MONTH(created_at) ASC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- ======================= User story 15 ==================
 -- permettra d’afficher toutes les stats de tous les joueur en fonction d’une année
@@ -367,24 +420,24 @@ SELECT
     (SELECT u1.pseudo
         FROM score s1 
         JOIN users u1 ON s1.id_user = u1.id_user
-        WHERE Year(s1.created_at) = Year(u.created_at)
-            AND MONTH(s1.created_at) = MONTH(u.created_at)
+        WHERE Year(s1.created_at) = Year(score.created_at)
+            AND MONTH(s1.created_at) = MONTH(score.created_at)
         ORDER BY s1.game_score DESC
          LIMIT 1) AS Top_1,
 
     (SELECT u2.pseudo
         FROM score s2
         JOIN users u2 ON s2.id_user = u2.id_user
-        WHERE Year(s2.created_at) = Year(u.created_at)
-            AND MONTH(s2.created_at) = MONTH(u.created_at)
+        WHERE Year(s2.created_at) = Year(score.created_at)
+            AND MONTH(s2.created_at) = MONTH(score.created_at)
         ORDER BY s2.game_score DESC
          LIMIT 1 offset 1) AS Top_2,
     
     (SELECT u3.pseudo
         FROM score s3
         JOIN users u3 ON s3.id_user = u3.id_user
-        WHERE Year(s3.created_at) = Year(u.created_at)
-            AND MONTH(s3.created_at) = MONTH(u.created_at)
+        WHERE Year(s3.created_at) = Year(score.created_at)
+            AND MONTH(s3.created_at) = MONTH(score.created_at)
         ORDER BY s3.game_score DESC
          LIMIT 1 offset 2) AS Top_3,
 
