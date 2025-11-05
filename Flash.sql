@@ -162,4 +162,22 @@ JOIN users u ON m.id_user = u.id_user -- Jointure corrigée
 WHERE m.created_at >= NOW() - INTERVAL 1 DAY
 ORDER BY m.created_at ASC;
 
+-- ======================= User story 11 ==================
+--  == création de la table “Messages privés”
+
+CREATE TABLE message_prive (
+    id INT AUTO_INCREMENT,
+    user_sender_id INT NOT NULL,
+    user_receiver_id INT NOT NULL,
+    message TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    read_at DATETIME DEFAULT NULL,
+    PRIMARY KEY(id)
+) ENGINE=InnoDB;
+
+    ALTER TABLE message_prive
+    FOREIGN KEY (user_sender_id) REFERENCES users(id_user),
+    FOREIGN KEY (user_receiver_id) REFERENCES users(id_user);
+
 
