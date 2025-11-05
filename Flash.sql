@@ -53,6 +53,72 @@ CREATE TABLE message (
 );
 
 
+---Partie tristan:----
+-- --------------------------------------------------------
+-- Story 6 : Afficher les scores (filtrable par jeu et difficulté)
+-- --------------------------------------------------------
+
+SET @difficulty_filter_s6 = '2'; 
+SET @game_name_filter_s6 = 'Memory';
+
+SELECT
+  jeu.name,
+  users.pseudo,
+  score.difficulty,
+  score.game_score,
+  score.created_at
+FROM
+  score
+JOIN
+  users ON score.id_user = users.id_user
+JOIN
+  jeu ON score.game_id = jeu.id
+WHERE
+  
+  (jeu.name = @game_name_filter_s6 OR @game_name_filter_s6 IS NULL)
+ 
+  AND (score.difficulty = @difficulty_filter_s6 OR @difficulty_filter_s6 IS NULL)
+ORDER BY
+  jeu.name ASC, 
+  score.difficulty DESC,
+  score.game_score DESC; 
+
+
+
+
+
+
+  -- Story 7--
+SET @difficulty_filter_s7 = NULL;
+SET @game_name_filter_s7 = NULL;
+SET @pseudo_filter_s7 = 'User'; 
+
+SELECT
+  jeu.name,
+  users.pseudo,
+  score.difficulty,
+  score.game_score,
+  score.created_at
+FROM
+  score
+JOIN
+  users ON score.id_user = users.id_user
+JOIN
+  jeu ON score.game_id = jeu.id
+WHERE
+  
+  (users.pseudo LIKE CONCAT('%', @pseudo_filter_s7, '%') OR @pseudo_filter_s7 IS NULL)
+  
+  
+  AND (jeu.name = @game_name_filter_s7 OR @game_name_filter_s7 IS NULL)
+  AND (score.difficulty = @difficulty_filter_s7 OR @difficulty_filter_s7 IS NULL)
+ORDER BY
+  jeu.name ASC,
+  score.difficulty DESC,
+  score.game_score DESC;
+
+
+
 -- --------------------------------------------------------
 -- Partie Emma : Requêtes corrigées
 -- --------------------------------------------------------
@@ -79,3 +145,26 @@ FROM message m
 JOIN users u ON m.id_user = u.id_user -- Jointure corrigée
 WHERE m.created_at >= NOW() - INTERVAL 1 DAY
 ORDER BY m.created_at ASC;
+
+
+
+
+
+
+
+
+
+
+
+--Outils-----
+INSERT INTO users (email, pseudo, password) VALUES
+('utilisateur1@exemple.com', 'User1Pseudo', '$2y$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),
+('utilisateur2@exemple.com', 'User2Pseudo', '$2y$10$YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY'),
+('utilisateur3@exemple.com', 'User3Pseudo', '$2y$10$ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ'),
+('utilisateur4@exemple.com', 'User4Pseudo', '$2y$10$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'),
+('utilisateur5@exemple.com', 'User5Pseudo', '$2y$10$BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'),
+('utilisateur6@exemple.com', 'User6Pseudo', '$2y$10$CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'),
+('utilisateur7@exemple.com', 'User7Pseudo', '$2y$10$DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'),
+('utilisateur8@exemple.com', 'User8Pseudo', '$2y$10$EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE'),
+('utilisateur9@exemple.com', 'User9Pseudo', '$2y$10$FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'),
+('utilisateur10@exemple.com', 'User10Pseudo', '$2y$10$GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG')
