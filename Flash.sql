@@ -147,24 +147,83 @@ WHERE m.created_at >= NOW() - INTERVAL 1 DAY
 ORDER BY m.created_at ASC;
 
 
+-- ======================= User story 2 ==================
+-- création du jeu de données
+
+INSERT INTO jeu(name)
+    VALUES('Power of Memory');
+
+INSERT INTO users(email,password,pseudo)
+    VALUES ('alice@example.com','passAlice123','AliceCF'),
+        ('bob@example.com', 'passBob456', 'BobTheBuilder'),
+        ('carol@example.com', 'carolPass789', 'Carol88'),
+        ('dave@example.com', 'daveSecure321', 'DaveD'),
+        ('eve@example.com', 'eve123Pass', 'EveE');
+
+
+INSERT INTO score (id_user, game_id, difficulty, game_score) 
+    VALUES
+        (1, 1, '1', 450),
+        (2, 1, '2', 720),
+        (3, 1, '1', 500),
+        (4, 1, '3', 950),
+        (5, 1, '2', 670),
+        (1, 1, '3', 880),
+        (2, 1, '1', 410),
+        (3, 1, '3', 970),
+        (4, 1, '2', 650),
+        (5, 1, '1', 400),
+        (1, 1, '2', 720),
+        (2, 1, '3', 930),
+        (3, 1, '1', 480),
+        (4, 1, '3', 990),
+        (5, 1, '2', 710),
+        (1, 1, '1', 500),
+        (2, 1, '2', 680),
+        (3, 1, '3', 940),
+        (4, 1, '1', 460),
+        (5, 1, '2', 750);
+
+INSERT INTO message (game_id, id_user, text_message) 
+VALUES
+        (1, 1, 'Salut à tous !'),
+        (1, 2, 'Salut Alice ! Prêt pour jouer ?'),
+        (1, 3, 'On lance une partie ?'),
+        (1, 4, 'Oui, je suis chaud !'),
+        (1, 5, 'Allons-y !'),
+        (2, 1, 'Bon courage à tous 😄'),
+        (2, 3, 'J’espère battre mon record !'),
+        (2, 2, '950 points la dernière fois 💪'),
+        (2, 4, 'Impressionnant !'),
+        (2, 5, 'On verra ça !'),
+        (3, 2, 'Partie terminée !'),
+        (3, 1, 'J’ai fait 450 points 😅'),
+        (3, 3, 'Moi 500, pas mal !'),
+        (3, 4, '950 ! 🏆'),
+        (3, 5, 'Bravo Diana !'),
+        (4, 4, 'Merci 😁'),
+        (4, 3, 'Nouvelle partie ?'),
+        (4, 2, 'Ok go'),
+        (4, 5, 'Je relance'),
+        (4, 1, 'C’est parti !'),
+        (5, 2, 'Score battu 😎'),
+        (5, 3, 'GG !'),
+        (5, 4, 'Vous jouez trop vite 😅'),
+        (5, 5, 'Haha merci'),
+        (5, 1, 'À plus tard tout le monde 👋');
 
 
 
+-- ======================= User story 4 ==================
+-- mise à jours du mpd et du mail
 
 
 
+UPDATE users
+    SET password = @new_mdp
+    WHERE id_client = @id_entry ;
 
 
-
---Outils-----
-INSERT INTO users (email, pseudo, password) VALUES
-('utilisateur1@exemple.com', 'User1Pseudo', '$2y$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),
-('utilisateur2@exemple.com', 'User2Pseudo', '$2y$10$YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY'),
-('utilisateur3@exemple.com', 'User3Pseudo', '$2y$10$ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ'),
-('utilisateur4@exemple.com', 'User4Pseudo', '$2y$10$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'),
-('utilisateur5@exemple.com', 'User5Pseudo', '$2y$10$BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'),
-('utilisateur6@exemple.com', 'User6Pseudo', '$2y$10$CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'),
-('utilisateur7@exemple.com', 'User7Pseudo', '$2y$10$DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'),
-('utilisateur8@exemple.com', 'User8Pseudo', '$2y$10$EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE'),
-('utilisateur9@exemple.com', 'User9Pseudo', '$2y$10$FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'),
-('utilisateur10@exemple.com', 'User10Pseudo', '$2y$10$GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG')
+UPDATE users
+    SET email = @new_email
+    WHERE id_client = @id_entry AND password = @new_mdp and @new_email NOT IN (SELECT email FROM users);
