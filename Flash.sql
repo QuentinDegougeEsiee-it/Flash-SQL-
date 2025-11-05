@@ -397,3 +397,20 @@ WHERE YEAR(score.created_at) = 2025
 GROUP BY YEAR(score.created_at), MONTH(score.created_at)
 ORDER BY YEAR(score.created_at), MONTH(score.created_at);
 
+--story 16--
+SELECT
+    YEAR(score.created_at) AS 'Année',
+    MONTH(score.created_at) AS 'Mois',
+    COUNT(id_user) AS 'Total parties',
+    count(score.game_id) as name.jeu-- jeux le plus joué,
+    AVG(game_score) AS 'Score moyen' -- En supposant que la colonne de score s'appelle 'score'
+FROM
+    score,
+    jeu
+WHERE
+    id_user = 1
+    AND YEAR(created_at) = 2025
+GROUP BY
+    YEAR(created_at), MONTH(created_at) -- Correction : Ajout du GROUP BY
+ORDER BY
+    Mois ASC; -- Correction : Ordre croissant
