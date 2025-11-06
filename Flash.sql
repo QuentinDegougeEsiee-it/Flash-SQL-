@@ -358,53 +358,35 @@ WHERE mp.id IS NULL;
 -- ======================= User story 14 ==================
 -- permettant d’afficher un échange entre deux utilisateurs
 
-SELECT  message, 
-        user_sender_id, 
-        user_receiver_id, 
-        created_at, 
-        read_at, 
-        is_read, 
-        (SELECT id_user, COUNT(*) As sender_games  
+SELECT  mp.message, 
+        mp.user_sender_id, 
+        mp.user_receiver_id, 
+        mp.created_at, 
+        mp.read_at, 
+        mp.is_read, 
+        (SELECT COUNT(*) As sender_games  
             FROM score
-            WHERE id_user = user_sender_id 
-            GROUP BY id_user )
+            WHERE id_user = mp.user_sender_id),
         
-        (SELECT id_user, COUNT(*) As receiver_games  
+        (SELECT COUNT(*) As receiver_games 
             FROM score
-            WHERE id_user = user_receiver_id 
-            GROUP BY id_user )
+            WHERE id_user = mp.user_receiver_id ),
         
-        (SELECT id_user, COUNT(*) As sender_most_played_games  
+        (SELECT game_id As sender_most_played_games  
             FROM score
-            WHERE id_user = user_sender_id 
-            GROUP BY id_user )
+            WHERE id_user = mp.user_sender_id
+            LIMIT 1),
         
-        (SELECT id_user, COUNT(*) As receiver_most_played_games  
+        (SELECT game_id As receiver_most_played_games  
             FROM score
-            WHERE id_user = user_receiver_id 
-            GROUP BY id_user )
-            
-    FROM message_prive
-    WHERE user_sender_id = @user_talking_1 OR user_sender_id = @user_talking_2
-        AND user_receiver_id = @user_talking_1 OR user_receiver_id = @user_talking_2
-    ORDER BY Year(created_at), MONTH(created_at) ASC
+            WHERE id_user = mp.user_receiver_id
+            LIMIT 1)
 
+    FROM message_prive mp
+    WHERE (mp.user_sender_id = @user_talking_1 AND mp.user_receiver_id = @user_talking_2)
+        OR (mp.user_sender_id = @user_talking_2 AND mp.user_receiver_id = @user_talking_1)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    ORDER BY mp.created_at ASC
 
 
 
