@@ -119,6 +119,9 @@ VALUES
 
 -- ======================= User story 3 ==================
 -- a requête SQL qui permettra d’enregistrer un utilisateur dans la table utilisateurs
+SET @new_user_email = 'gamefreaksadixansderetard@gmail.com',
+    @new_user_password = 'bandedefaignant',
+    @new_user_pseudo = 'arretez_de_dormir_sur_vos_billets' ;
 
 INSERT INTO users(email,password,pseudo)
     VALUES (@new_user_email,@new_user_password, @new_user_pseudo);
@@ -128,7 +131,10 @@ INSERT INTO users(email,password,pseudo)
 -- ======================= User story 4 ==================
 -- mise à jours du mpd et du mail
 
-
+SET @new_mdp = 'truquiebetterthanturquie',
+    @id_entry = 1,
+    @new_email= 'fandetruc@gmail.com'
+    @old_mdp = 'passAlice123'
 
 UPDATE users
     SET password = @new_mdp
