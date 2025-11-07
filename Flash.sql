@@ -254,19 +254,13 @@ CREATE TABLE message_prive (
     is_read BOOLEAN DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     read_at DATETIME DEFAULT NULL,
-    PRIMARY KEY(id)
-) ENGINE=InnoDB;
-
+    PRIMARY KEY(id),
     ALTER TABLE message_prive
     ADD FOREIGN KEY (user_sender_id) REFERENCES users(id_user),
-    ADD FOREIGN KEY (user_receiver_id) REFERENCES users(id_user);
+    ADD FOREIGN KEY (user_receiver_id) REFERENCES users(id_user)
+) ENGINE=InnoDB;
 
-
-
-
-
-
-    
+  
 -- ======================= User story 12 ==================
 -- ====== Ajout de 5 utilisateurs pour les tests=======
 INSERT INTO users (email, pseudo, password) VALUES
@@ -340,4 +334,23 @@ WHERE user_sender_id = 1 OR user_receiver_id = 1;
 SELECT u.id_user, u.pseudo FROM users
 LEFT JOIN message_prive mp
 ON u.id_user = mp.user_sender_id OR u.id_user = mp.user_receiver_id
-WHERE mp.id IS NULL;
+WHERE mp.id IS NULL; 
+
+-- ======================= User story 13 ==================
+SELECT 
+    u_sender.pseudo AS expediteur,
+    u_receiver.pseudo AS Destinataire,
+    mp.message AS Dernier_Message,
+    mp.created_at AS Date_Envoi,
+    mp.is_read AS Lu_NonLu
+FROM message_prive mp
+JOIN SELECT(
+  LEAST(user_sender_id, user_receiver_id) AS id_min,
+  GREATEST(user_sender_id, user_receiver_id) AS id_max,
+  MAX(created_at) AS date_max
+  FROM
+        message_prive
+  WHERE
+      user_sender_id = 1 OR user_receiver_id = 1
+  GROUP BY id_min, id_max
+) AS DernierMsgUnique
