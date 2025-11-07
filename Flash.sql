@@ -264,18 +264,13 @@ CREATE TABLE message_prive (
     is_read BOOLEAN DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     read_at DATETIME DEFAULT NULL,
-    PRIMARY KEY(id)
-) ENGINE=InnoDB;
-
+    PRIMARY KEY(id),
     ALTER TABLE message_prive
     ADD FOREIGN KEY (user_sender_id) REFERENCES users(id_user),
-    ADD FOREIGN KEY (user_receiver_id) REFERENCES users(id_user);
+    ADD FOREIGN KEY (user_receiver_id) REFERENCES users(id_user)
+) ENGINE=InnoDB;
 
-
-
-
-
-
+  
 
 -- ======================= User story 12 ==================
 -- ====== Ajout de 5 utilisateurs pour les tests=======
@@ -350,7 +345,26 @@ WHERE user_sender_id = 1 OR user_receiver_id = 1;
 SELECT u.id_user, u.pseudo FROM users
 LEFT JOIN message_prive mp
 ON u.id_user = mp.user_sender_id OR u.id_user = mp.user_receiver_id
-WHERE mp.id IS NULL;
+WHERE mp.id IS NULL; 
+
+-- ======================= User story 13 ==================
+SELECT 
+    u_sender.pseudo AS expediteur,
+    u_receiver.pseudo AS Destinataire,
+    mp.message AS Dernier_Message,
+    mp.created_at AS Date_Envoi,
+    mp.is_read AS Lu_NonLu
+FROM message_prive mp
+JOIN SELECT(
+  LEAST(user_sender_id, user_receiver_id) AS id_min,
+  GREATEST(user_sender_id, user_receiver_id) AS id_max,
+  MAX(created_at) AS date_max
+  FROM
+        message_prive
+  WHERE
+      user_sender_id = 1 OR user_receiver_id = 1
+  GROUP BY id_min, id_max
+) AS DernierMsgUnique
 
 
 
@@ -358,53 +372,35 @@ WHERE mp.id IS NULL;
 -- ======================= User story 14 ==================
 -- permettant d’afficher un échange entre deux utilisateurs
 
-SELECT  message, 
-        user_sender_id, 
-        user_receiver_id, 
-        created_at, 
-        read_at, 
-        is_read, 
-        (SELECT id_user, COUNT(*) As sender_games  
+SELECT  mp.message, 
+        mp.user_sender_id, 
+        mp.user_receiver_id, 
+        mp.created_at, 
+        mp.read_at, 
+        mp.is_read, 
+        (SELECT COUNT(*) As sender_games  
             FROM score
-            WHERE id_user = user_sender_id 
-            GROUP BY id_user )
+            WHERE id_user = mp.user_sender_id),
         
-        (SELECT id_user, COUNT(*) As receiver_games  
+        (SELECT COUNT(*) As receiver_games 
             FROM score
-            WHERE id_user = user_receiver_id 
-            GROUP BY id_user )
+            WHERE id_user = mp.user_receiver_id ),
         
-        (SELECT id_user, COUNT(*) As sender_most_played_games  
+        (SELECT game_id As sender_most_played_games  
             FROM score
-            WHERE id_user = user_sender_id 
-            GROUP BY id_user )
+            WHERE id_user = mp.user_sender_id
+            LIMIT 1),
         
-        (SELECT id_user, COUNT(*) As receiver_most_played_games  
+        (SELECT game_id As receiver_most_played_games  
             FROM score
-            WHERE id_user = user_receiver_id 
-            GROUP BY id_user )
-            
-    FROM message_prive
-    WHERE user_sender_id = @user_talking_1 OR user_sender_id = @user_talking_2
-        AND user_receiver_id = @user_talking_1 OR user_receiver_id = @user_talking_2
-    ORDER BY Year(created_at), MONTH(created_at) ASC
+            WHERE id_user = mp.user_receiver_id
+            LIMIT 1)
 
+    FROM message_prive mp
+    WHERE (mp.user_sender_id = @user_talking_1 AND mp.user_receiver_id = @user_talking_2)
+        OR (mp.user_sender_id = @user_talking_2 AND mp.user_receiver_id = @user_talking_1)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    ORDER BY mp.created_at ASC
 
 
 
