@@ -95,26 +95,26 @@ VALUES
         (1, 3, 'On lance une partie ?'),
         (1, 4, 'Oui, je suis chaud !'),
         (1, 5, 'Allons-y !'),
-        (2, 1, 'Bon courage à tous 😄'),
-        (2, 3, 'J’espère battre mon record !'),
-        (2, 2, '950 points la dernière fois 💪'),
-        (2, 4, 'Impressionnant !'),
-        (2, 5, 'On verra ça !'),
-        (3, 2, 'Partie terminée !'),
-        (3, 1, 'J’ai fait 450 points 😅'),
-        (3, 3, 'Moi 500, pas mal !'),
-        (3, 4, '950 ! 🏆'),
-        (3, 5, 'Bravo Diana !'),
-        (4, 4, 'Merci 😁'),
-        (4, 3, 'Nouvelle partie ?'),
-        (4, 2, 'Ok go'),
-        (4, 5, 'Je relance'),
-        (4, 1, 'C’est parti !'),
-        (5, 2, 'Score battu 😎'),
-        (5, 3, 'GG !'),
-        (5, 4, 'Vous jouez trop vite 😅'),
-        (5, 5, 'Haha merci'),
-        (5, 1, 'À plus tard tout le monde 👋');
+        (1, 1, 'Bon courage à tous 😄'),
+        (1, 3, 'J’espère battre mon record !'),
+        (1, 2, '950 points la dernière fois 💪'),
+        (1, 4, 'Impressionnant !'),
+        (1, 5, 'On verra ça !'),
+        (1, 2, 'Partie terminée !'),
+        (1, 1, 'J’ai fait 450 points 😅'),
+        (1, 3, 'Moi 500, pas mal !'),
+        (1, 4, '950 ! 🏆'),
+        (1, 5, 'Bravo Diana !'),
+        (1, 4, 'Merci 😁'),
+        (1, 3, 'Nouvelle partie ?'),
+        (1, 2, 'Ok go'),
+        (1, 5, 'Je relance'),
+        (1, 1, 'C’est parti !'),
+        (1, 2, 'Score battu 😎'),
+        (1, 3, 'GG !'),
+        (1, 4, 'Vous jouez trop vite 😅'),
+        (1, 5, 'Haha merci'),
+        (1, 1, 'À plus tard tout le monde 👋');
 
 
 -- ======================= User story 3 ==================
@@ -133,8 +133,8 @@ INSERT INTO users(email,password,pseudo)
 
 SET @new_mdp = 'truquiebetterthanturquie',
     @id_entry = 1,
-    @new_email= 'fandetruc@gmail.com'
-    @old_mdp = 'passAlice123'
+    @new_email= 'fandetruc@gmail.com',
+    @old_mdp = 'passAlice123';
 
 UPDATE users
     SET password = @new_mdp
@@ -148,8 +148,10 @@ UPDATE users
 
 -- ======================= User story 5 ==================
 -- requète identifiant
+SET @given_password = 'truquiebetterthanturquie',
+    @given_email= 'fandetruc@gmail.com';
 
-SELECT  id_user , email, password FROM users
+SELECT  pseudo, id_user , email, password FROM users
     WHERE email = @given_email
         AND password = @given_password;
 
@@ -376,6 +378,8 @@ JOIN SELECT(
 
 -- ======================= User story 14 ==================
 -- permettant d’afficher un échange entre deux utilisateurs
+SET @user_talking_1 = 1,
+    @user_talking_2 = 2;
 
 SELECT  mp.message, 
         mp.user_sender_id, 
