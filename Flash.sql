@@ -3,12 +3,12 @@
 -- --------------------------------------------------------
 
 -- Création de la base de données
-CREATE DATABASE IF NOT EXISTS site_info -- Ajouté IF NOT EXISTS pour éviter une erreur si elle existe déjà
+CREATE DATABASE IF NOT EXISTS test2 -- Ajouté IF NOT EXISTS pour éviter une erreur si elle existe déjà
     DEFAULT CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
 
 -- Sélectionner la base de données pour les commandes suivantes
-USE site_info;
+USE test2;
 
 -- Table des jeux (définie en premier pour les clés étrangères)
 CREATE TABLE jeu (
@@ -36,8 +36,8 @@ CREATE TABLE score (
     game_score INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id),
-    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
-    FOREIGN KEY (game_id) REFERENCES jeu(id) ON DELETE CASCADE
+    FOREIGN KEY (id_user) REFERENCES users(id_user),
+    FOREIGN KEY (game_id) REFERENCES jeu(id)
 );
 
 -- Table des messages 
@@ -48,8 +48,8 @@ CREATE TABLE message (
     text_message VARCHAR(500) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id),
-    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
-    FOREIGN KEY (game_id) REFERENCES jeu(id) ON DELETE CASCADE
+    FOREIGN KEY (id_user) REFERENCES users(id_user),
+    FOREIGN KEY (game_id) REFERENCES jeu(id)
 );
 -- ======================= User story 2 ==================
 -- création du jeu de données
@@ -88,6 +88,7 @@ INSERT INTO score (id_user, game_id, difficulty, game_score)
         (4, 1, '1', 460),
         (5, 1, '2', 750);
 
+
 INSERT INTO message (game_id, id_user, text_message) 
 VALUES
         (1, 1, 'Salut à tous !'),
@@ -119,10 +120,9 @@ VALUES
 
 -- ======================= User story 3 ==================
 -- a requête SQL qui permettra d’enregistrer un utilisateur dans la table utilisateurs
-SET @new_user_email = 'gamefreaksadixansderetard@gmail.com',
-    @new_user_password = 'bandedefaignant',
-    @new_user_pseudo = 'arretez_de_dormir_sur_vos_billets' ;
-
+SET @new_user_email = 'user@test.com';
+SET @new_user_password = 'securePass123';
+SET @new_user_pseudo = 'TestUser';
 INSERT INTO users(email,password,pseudo)
     VALUES (@new_user_email,@new_user_password, @new_user_pseudo);
 
@@ -131,15 +131,16 @@ INSERT INTO users(email,password,pseudo)
 -- ======================= User story 4 ==================
 -- mise à jours du mpd et du mail
 
-SET @new_mdp = 'truquiebetterthanturquie',
-    @id_entry = 1,
-    @new_email= 'fandetruc@gmail.com',
-    @old_mdp = 'passAlice123';
+SET @id_entry = 1;
+SET @new_mdp = 'newSecurePass456';
 
 UPDATE users
     SET password = @new_mdp
     WHERE id_user = @id_entry ;
 
+SET @id_entry = 1;
+SET @old_mdp = 'newSecurePass456';
+SET @new_email = 'user2@test.com';
 
 UPDATE users
     SET email = @new_email
@@ -148,23 +149,24 @@ UPDATE users
 
 -- ======================= User story 5 ==================
 -- requète identifiant
-SET @given_password = 'truquiebetterthanturquie',
-    @given_email= 'fandetruc@gmail.com';
 
-SELECT  pseudo, id_user , email, password FROM users
+SET @given_email = 'user2@test.com';
+SET @given_password = 'newSecurePass456';
+SELECT  id_user , email, password FROM users
     WHERE email = @given_email
         AND password = @given_password;
 
 
 
 
----Partie tristan:----
+
+-- Partie tristan --
 -- --------------------------------------------------------
 -- Story 6 : Afficher les scores (filtrable par jeu et difficulté)
 -- --------------------------------------------------------
 
-SET @difficulty_filter_s6 = '2'; 
-SET @game_name_filter_s6 = 'Memory';
+SET @difficulty_filter_s6 = 2; 
+SET @game_name_filter_s6 = 'Power of Memory';
 
 SELECT
   jeu.name,
@@ -196,7 +198,7 @@ ORDER BY
   -- Story 7--
 SET @difficulty_filter_s7 = NULL;
 SET @game_name_filter_s7 = NULL;
-SET @pseudo_filter_s7 = 'User'; 
+SET @pseudo_filter_s7 = 'EveE'; 
 
 SELECT
   jeu.name,
@@ -222,11 +224,11 @@ ORDER BY
   score.difficulty DESC,
   score.game_score DESC;
 
---Story 8--
-@difficulty_s8 = '2';
-@game_id_s8 = 'Memory';
-@id_user_s8 = 2;
-@game_score_s8 = 800;
+-- Story 8 --
+SET @difficulty_s8 = '2';
+SET @game_id_s8 = 1;
+SET @id_user_s8 = 2;
+SET @game_score_s8 = 800;
 INSERT INTO score (id_user, game_id, difficulty,game_score) VALUES (@id_user_s8, @game_id_s8, @difficulty_s8, @game_score_s8);
 
 
@@ -264,17 +266,27 @@ ORDER BY m.created_at ASC;
 --  == création de la table “Messages privés”
 
 CREATE TABLE message_prive (
-    id INT AUTO_INCREMENT,
-    user_sender_id INT NOT NULL,
-    user_receiver_id INT NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_sender_id INT NULL,
+    user_receiver_id INT NULL,
     message TEXT NOT NULL,
     is_read BOOLEAN DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     read_at DATETIME DEFAULT NULL,
-    PRIMARY KEY(id),
-    ALTER TABLE message_prive
-    ADD FOREIGN KEY (user_sender_id) REFERENCES users(id_user) ON DELETE CASCADE,
-    ADD FOREIGN KEY (user_receiver_id) REFERENCES users(id_user) ON DELETE CASCADE
+
+    
+    FOREIGN KEY (user_sender_id) 
+        REFERENCES users(id_user) 
+        ON DELETE SET NULL, -- <-- La virgule manquante était ici
+
+    FOREIGN KEY (user_receiver_id) 
+        REFERENCES users(id_user) 
+        ON DELETE SET NULL,
+
+
+    INDEX idx_receiver_read (user_receiver_id, is_read), 
+    INDEX idx_conversation (user_sender_id, user_receiver_id) 
+
 ) ENGINE=InnoDB;
 
   
@@ -315,7 +327,7 @@ VALUES
 
 
 
---====== Création (insertion) d’un nouveau message privé =========
+-- ====== Création (insertion) d’un nouveau message privé =========
 INSERT INTO message_prive (user_sender_id, user_receiver_id, message)
 VALUES (1, 2, 'Salut Bob, encore une partie ?');
 
@@ -349,37 +361,36 @@ SELECT * FROM message_prive
 WHERE user_sender_id = 1 OR user_receiver_id = 1;
 
 -- == Voir les utilisateurs sans messages ==
-SELECT u.id_user, u.pseudo FROM users
+SELECT id_user, pseudo FROM users
 LEFT JOIN message_prive mp
-ON u.id_user = mp.user_sender_id OR u.id_user = mp.user_receiver_id
+ON users.id_user = mp.user_sender_id OR users.id_user = mp.user_receiver_id
 WHERE mp.id IS NULL; 
 
+
 -- ======================= User story 13 ==================
-SELECT 
-    u_sender.pseudo AS expediteur,
-    u_receiver.pseudo AS Destinataire,
-    mp.message AS Dernier_Message,
-    mp.created_at AS Date_Envoi,
-    mp.is_read AS Lu_NonLu
-FROM message_prive mp
-JOIN SELECT(
-  LEAST(user_sender_id, user_receiver_id) AS id_min,
-  GREATEST(user_sender_id, user_receiver_id) AS id_max,
-  MAX(created_at) AS date_max
-  FROM
-        message_prive
-  WHERE
-      user_sender_id = 1 OR user_receiver_id = 1
-  GROUP BY id_min, id_max
-) AS DernierMsgUnique
+-- SELECT 
+--     u_sender.pseudo AS expediteur,
+--     u_receiver.pseudo AS Destinataire,
+--     mp.message AS Dernier_Message,
+--     mp.created_at AS Date_Envoi,
+--     mp.is_read AS Lu_NonLu
+-- FROM message_prive mp
+-- JOIN SELECT(
+--   LEAST(user_sender_id, user_receiver_id) AS id_min,
+--   GREATEST(user_sender_id, user_receiver_id) AS id_max,
+--   MAX(created_at) AS date_max
+--   FROM
+--         message_prive
+--   WHERE
+--       user_sender_id = 1 OR user_receiver_id = 1
+--   GROUP BY id_min, id_max
+-- ) AS DernierMsgUnique
 
 
 
 
 -- ======================= User story 14 ==================
 -- permettant d’afficher un échange entre deux utilisateurs
-SET @user_talking_1 = 1,
-    @user_talking_2 = 2;
 
 SELECT  mp.message, 
         mp.user_sender_id, 
@@ -409,7 +420,7 @@ SELECT  mp.message,
     WHERE (mp.user_sender_id = @user_talking_1 AND mp.user_receiver_id = @user_talking_2)
         OR (mp.user_sender_id = @user_talking_2 AND mp.user_receiver_id = @user_talking_1)
 
-    ORDER BY mp.created_at ASC
+    ORDER BY mp.created_at ASC;
 
 
 
