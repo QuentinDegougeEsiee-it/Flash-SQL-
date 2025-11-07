@@ -74,9 +74,11 @@ Toutes les requêtes sont commentées et regroupées dans un unique fichier `.sq
 ### 6. Statistiques
 * **Stats globales** : Génération d'un tableau de statistiques (Top 3 joueurs, total parties) par mois pour une année donnée (ex: 2025).
 * **Stats par joueur** : Génération de statistiques (total parties, score moyen) par mois pour un joueur spécifique.
-</br>
-</br>
+
+
+* ### 6. Ressource utile
 <center>
 
 [Diaporama présentation final](https://www.canva.com/design/DAG30XBGR7c/x5rQo4t7PwhoazRliv6wtg/view?utm_content=DAG30XBGR7c&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hccc5039c9a)
+[Docs website](https://gemini.google.com/share/3872fa32d295)
 </center>
