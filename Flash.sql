@@ -36,8 +36,8 @@ CREATE TABLE score (
     game_score INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id),
-    FOREIGN KEY (id_user) REFERENCES users(id_user),
-    FOREIGN KEY (game_id) REFERENCES jeu(id)
+    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
+    FOREIGN KEY (game_id) REFERENCES jeu(id) ON DELETE CASCADE
 );
 
 -- Table des messages 
@@ -48,8 +48,8 @@ CREATE TABLE message (
     text_message VARCHAR(500) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id),
-    FOREIGN KEY (id_user) REFERENCES users(id_user),
-    FOREIGN KEY (game_id) REFERENCES jeu(id)
+    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
+    FOREIGN KEY (game_id) REFERENCES jeu(id) ON DELETE CASCADE
 );
 -- ======================= User story 2 ==================
 -- création du jeu de données
@@ -271,8 +271,8 @@ CREATE TABLE message_prive (
     read_at DATETIME DEFAULT NULL,
     PRIMARY KEY(id),
     ALTER TABLE message_prive
-    ADD FOREIGN KEY (user_sender_id) REFERENCES users(id_user),
-    ADD FOREIGN KEY (user_receiver_id) REFERENCES users(id_user)
+    ADD FOREIGN KEY (user_sender_id) REFERENCES users(id_user) ON DELETE CASCADE,
+    ADD FOREIGN KEY (user_receiver_id) REFERENCES users(id_user) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
   
