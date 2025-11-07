@@ -115,6 +115,16 @@ VALUES
         (5, 4, 'Vous jouez trop vite 😅'),
         (5, 5, 'Haha merci'),
         (5, 1, 'À plus tard tout le monde 👋');
+
+
+-- ======================= User story 3 ==================
+-- a requête SQL qui permettra d’enregistrer un utilisateur dans la table utilisateurs
+
+INSERT INTO users(email,password,pseudo)
+    VALUES (@new_user_email,@new_user_password, @new_user_pseudo);
+
+
+
 -- ======================= User story 4 ==================
 -- mise à jours du mpd et du mail
 
@@ -261,6 +271,7 @@ CREATE TABLE message_prive (
 ) ENGINE=InnoDB;
 
   
+
 -- ======================= User story 12 ==================
 -- ====== Ajout de 5 utilisateurs pour les tests=======
 INSERT INTO users (email, pseudo, password) VALUES
@@ -354,3 +365,101 @@ JOIN SELECT(
       user_sender_id = 1 OR user_receiver_id = 1
   GROUP BY id_min, id_max
 ) AS DernierMsgUnique
+
+
+
+
+-- ======================= User story 14 ==================
+-- permettant d’afficher un échange entre deux utilisateurs
+
+SELECT  mp.message, 
+        mp.user_sender_id, 
+        mp.user_receiver_id, 
+        mp.created_at, 
+        mp.read_at, 
+        mp.is_read, 
+        (SELECT COUNT(*) As sender_games  
+            FROM score
+            WHERE id_user = mp.user_sender_id),
+        
+        (SELECT COUNT(*) As receiver_games 
+            FROM score
+            WHERE id_user = mp.user_receiver_id ),
+        
+        (SELECT game_id As sender_most_played_games  
+            FROM score
+            WHERE id_user = mp.user_sender_id
+            LIMIT 1),
+        
+        (SELECT game_id As receiver_most_played_games  
+            FROM score
+            WHERE id_user = mp.user_receiver_id
+            LIMIT 1)
+
+    FROM message_prive mp
+    WHERE (mp.user_sender_id = @user_talking_1 AND mp.user_receiver_id = @user_talking_2)
+        OR (mp.user_sender_id = @user_talking_2 AND mp.user_receiver_id = @user_talking_1)
+
+    ORDER BY mp.created_at ASC
+
+
+
+
+-- ======================= User story 15 ==================
+-- permettra d’afficher toutes les stats de tous les joueur en fonction d’une année
+
+
+SELECT
+    Year(score.created_at) AS Année,
+    MONTH(score.created_at) As Mois,
+
+    (SELECT u1.pseudo
+        FROM score s1 
+        JOIN users u1 ON s1.id_user = u1.id_user
+        WHERE Year(s1.created_at) = Year(score.created_at)
+            AND MONTH(s1.created_at) = MONTH(score.created_at)
+        ORDER BY s1.game_score DESC
+         LIMIT 1) AS Top_1,
+
+    (SELECT u2.pseudo
+        FROM score s2
+        JOIN users u2 ON s2.id_user = u2.id_user
+        WHERE Year(s2.created_at) = Year(score.created_at)
+            AND MONTH(s2.created_at) = MONTH(score.created_at)
+        ORDER BY s2.game_score DESC
+         LIMIT 1 offset 1) AS Top_2,
+    
+    (SELECT u3.pseudo
+        FROM score s3
+        JOIN users u3 ON s3.id_user = u3.id_user
+        WHERE Year(s3.created_at) = Year(score.created_at)
+            AND MONTH(s3.created_at) = MONTH(score.created_at)
+        ORDER BY s3.game_score DESC
+         LIMIT 1 offset 2) AS Top_3,
+
+    COUNT(score.id) AS Total_parties,
+
+    (SELECT name FROM jeu ) As Jeu_le_plus_joué
+
+FROM score 
+WHERE YEAR(score.created_at) = 2025
+GROUP BY YEAR(score.created_at), MONTH(score.created_at)
+ORDER BY YEAR(score.created_at), MONTH(score.created_at);
+
+--story 16--
+SELECT
+    YEAR(score.created_at) AS 'Année',
+    MONTH(score.created_at) AS 'Mois',
+    COUNT(id_user) AS 'Total parties',
+    count(score.game_id) as name.jeu-- jeux le plus joué,
+    AVG(game_score) AS 'Score moyen' -- En supposant que la colonne de score s'appelle 'score'
+FROM
+    score,
+    jeu
+WHERE
+    id_user = 1
+    AND YEAR(created_at) = 2025
+GROUP BY
+    YEAR(created_at), MONTH(created_at) 
+ORDER BY
+    Mois ASC; 
