@@ -2,7 +2,7 @@
 
 ![MySQL](https://img.shields.io/badge/Database-MySQL-blue?style=for-the-badge&logo=mysql)
 ![PHP](https://img.shields.io/badge/Backend_Futur-PHP-8892BF?style=for-the-badge&logo=php)
-![Status](https://img.shields.io/badge/Status-Partie_2_SQL_En_cours-red?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Partie_2_SQL_Terminé-gree?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
 ![GitHub contributors](https://img.shields.io/github/contributors/QuentinDegougeEsiee-it/Flash-SQL-?style=for-the-badge)
