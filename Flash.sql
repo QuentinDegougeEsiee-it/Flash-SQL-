@@ -252,7 +252,6 @@ FROM message m
 JOIN users u ON m.id_user = u.id_user -- Jointure corrigée
 WHERE m.created_at >= NOW() - INTERVAL 1 DAY
 ORDER BY m.created_at ASC;
-
 -- ======================= User story 11 ==================
 --  == création de la table “Messages privés”
 
