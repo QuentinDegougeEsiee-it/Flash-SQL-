@@ -80,5 +80,5 @@ Toutes les requêtes sont commentées et regroupées dans un unique fichier `.sq
 <center>
 
 [Diaporama présentation final](https://www.canva.com/design/DAG30XBGR7c/x5rQo4t7PwhoazRliv6wtg/view?utm_content=DAG30XBGR7c&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hccc5039c9a)
-[Docs website](https://gemini.google.com/share/3872fa32d295)
+[Docs website](https://gemini.google.com/share/2040635576bc)
 </center>
